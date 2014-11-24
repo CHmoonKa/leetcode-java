@@ -1,4 +1,4 @@
-package com.leetcode.solutions;
+package com.iwendy.leetcode;
 
 /**
  * Reverse digits of an integer.
