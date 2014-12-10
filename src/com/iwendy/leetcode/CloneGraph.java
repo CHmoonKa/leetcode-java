@@ -1,6 +1,8 @@
 package com.iwendy.leetcode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -29,7 +31,36 @@ Visually, the graph looks like the following:
  */
 public class CloneGraph {
 	public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
-
+	  if(node == null) return node;
+	  
+	  UndirectedGraphNode cloneRoot = new UndirectedGraphNode(node.label);
+	  if(node.neighbors == null)return cloneRoot;
+	  
+	  // 确保每一个对象只建立一次
+	  HashMap<UndirectedGraphNode, UndirectedGraphNode> hm = new HashMap<>();
+	  hm.put(node, cloneRoot);
+	  
+	  LinkedList<UndirectedGraphNode> queue = new LinkedList<>();
+	  queue.add(node);
+	  
+	  while(!queue.isEmpty()){
+	    UndirectedGraphNode tmp = queue.poll();
+	    List<UndirectedGraphNode> neigs = tmp.neighbors;
+	    for(UndirectedGraphNode n : neigs){
+	      UndirectedGraphNode tmpClone = hm.get(n);
+	      if(tmpClone != null){
+	        hm.get(tmp).neighbors.add(tmpClone);
+	      }else{
+	        tmpClone = new UndirectedGraphNode(n.label);
+	        hm.get(tmp).neighbors.add(tmpClone);
+	        hm.put(n, tmpClone);
+	        queue.add(n);
+	      }
+	    }
+	    
+	  }
+	  
+	  return cloneRoot;
 	}
 
 	class UndirectedGraphNode {
